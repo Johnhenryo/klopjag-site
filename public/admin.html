@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="af">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Klopjag &mdash; Argief (Band)</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="images/logo.png">
+<style>
+  body{ font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:#15130f; color:#f2ead9; max-width:960px; margin:0 auto; padding:32px 20px 80px; }
+  h1{ font-size:1.4rem; display:flex; align-items:center; gap:10px; }
+  h1 img{ height:26px; }
+  .card{ background:#201c16; border:1px solid rgba(242,234,217,.14); border-radius:12px; padding:20px; margin-bottom:20px; }
+  input[type="password"]{ font-size:1rem; padding:10px 12px; border-radius:8px; border:1px solid rgba(242,234,217,.25); background:#2a251d; color:#f2ead9; width:260px; max-width:100%; }
+  button{ font-size:.9rem; padding:10px 16px; border-radius:8px; border:none; background:#e2632a; color:#20120a; font-weight:600; cursor:pointer; }
+  button:hover{ background:#ff7a3d; }
+  button.ghost{ background:transparent; color:#a89a82; border:1px solid rgba(242,234,217,.25); }
+  .row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  table{ width:100%; border-collapse:collapse; font-size:.88rem; }
+  th, td{ text-align:left; padding:10px 8px; border-bottom:1px solid rgba(242,234,217,.1); vertical-align:top; }
+  th{ color:#a89a82; text-transform:uppercase; font-size:.7rem; letter-spacing:.05em; }
+  tr.pending td{ border-left:3px solid #e2632a; }
+  .muted{ color:#a89a82; font-size:.85rem; }
+  #status{ font-size:.85rem; min-height:20px; }
+  select{ background:#2a251d; color:#f2ead9; border:1px solid rgba(242,234,217,.25); border-radius:8px; padding:8px; }
+  .actions-cell{ display:flex; gap:6px; flex-wrap:wrap; }
+  .del{ background:transparent; color:#e2632a; border:1px solid #e2632a; padding:4px 10px; font-size:.75rem; }
+  .ok-btn{ background:#4a7c4e; color:#f2ead9; padding:4px 10px; font-size:.75rem; }
+  .ok-btn:hover{ background:#5c9861; }
+  .undo-btn{ background:transparent; color:#a89a82; border:1px solid rgba(242,234,217,.25); padding:4px 10px; font-size:.75rem; }
+  .badge{ display:inline-block; padding:2px 8px; border-radius:20px; font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; font-weight:700; }
+  .badge.pending{ background:rgba(226,99,42,.18); color:#ff9a63; }
+  .badge.approved{ background:rgba(90,150,97,.18); color:#8fce97; }
+  .story-link{ color:#ff9a63; }
+</style>
+</head>
+<body>
+  <h1><img src="images/logo.png" alt=""> Storie-argief (net vir die band)</h1>
+  <p class="muted">Alle stories (en aansoeke om saam te sing) wat fans via klopjag.co.za instuur, kom hier in as "wag vir goedkeuring". Klik "OK" om 'n inskrywing op die publieke site se argief-preview te wys &mdash; niks gaan outomaties publiek nie. Hierdie bladsy is self nie op die publieke site gelink nie &mdash; hou die sleutel net binne die band.</p>
+
+  <div class="card" id="login-card">
+    <div class="row">
+      <input type="password" id="key" placeholder="Admin-sleutel">
+      <button id="login-btn">Maak oop</button>
+    </div>
+    <div id="status"></div>
+  </div>
+
+  <div class="card" id="data-card" style="display:none;">
+    <div class="row" style="justify-content:space-between; margin-bottom:14px;">
+      <div class="row">
+        <label class="muted">Status:</label>
+        <select id="filter-status">
+          <option value="">Alle</option>
+          <option value="pending">Wag vir goedkeuring</option>
+          <option value="approved">Goedgekeur</option>
+        </select>
+        <label class="muted">Tipe:</label>
+        <select id="filter-cat">
+          <option value="">Alle tipes</option>
+        </select>
+      </div>
+      <div class="row">
+        <span class="muted" id="count"></span>
+        <button class="ghost" id="export-btn">Laai CSV af</button>
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>Datum</th><th>Status</th><th>Naam</th><th>Kontak</th><th>Liedjie</th><th>Tipe</th><th>Plek</th><th>Wanneer</th><th>Storie</th><th>Skakel</th><th></th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+
+  <div class="card" id="notify-card" style="display:none;">
+    <div class="row" style="justify-content:space-between;">
+      <div>
+        <strong>Kaartjie-belangstelling</strong>
+        <div class="muted" id="notify-count">Laai...</div>
+      </div>
+      <button class="ghost" id="notify-export-btn">Laai CSV af</button>
+    </div>
+  </div>
+
+<script>
+  var KEY = null;
+  var ALL = [];
+
+  function fmtDate(iso){ try{ return new Date(iso).toLocaleString('af-ZA'); }catch(e){ return iso; } }
+
+  function render(){
+    var cat = document.getElementById('filter-cat').value;
+    var statusFilter = document.getElementById('filter-status').value;
+    var rows = document.getElementById('rows');
+    rows.innerHTML = '';
+    var filtered = ALL.filter(function(s){
+      return (!cat || s.category === cat) && (!statusFilter || (s.status || 'pending') === statusFilter);
+    });
+    // Pending submissions float to the top so the band sees the queue first.
+    filtered.sort(function(a, b){
+      var pa = (a.status || 'pending') === 'pending' ? 0 : 1;
+      var pb = (b.status || 'pending') === 'pending' ? 0 : 1;
+      return pa - pb;
+    });
+    var pendingCount = ALL.filter(function(s){ return (s.status || 'pending') === 'pending'; }).length;
+    document.getElementById('count').textContent = filtered.length + ' inskrywing(s) · ' + pendingCount + ' wag vir goedkeuring';
+    filtered.forEach(function(s){
+      var isPending = (s.status || 'pending') === 'pending';
+      var tr = document.createElement('tr');
+      tr.className = isPending ? 'pending' : '';
+      function td(txt){ var d = document.createElement('td'); d.textContent = txt; return d; }
+      tr.appendChild(td(fmtDate(s.createdAt)));
+      var statusTd = document.createElement('td');
+      var badge = document.createElement('span');
+      badge.className = 'badge ' + (isPending ? 'pending' : 'approved');
+      badge.textContent = isPending ? 'Wag' : 'OK';
+      statusTd.appendChild(badge);
+      tr.appendChild(statusTd);
+      tr.appendChild(td(s.name));
+      tr.appendChild(td(s.contact || ''));
+      tr.appendChild(td(s.song));
+      tr.appendChild(td(s.category));
+      tr.appendChild(td(s.venue || ''));
+      tr.appendChild(td(s.when || ''));
+      tr.appendChild(td(s.text));
+      var linkTd = document.createElement('td');
+      if(s.link){
+        var a = document.createElement('a');
+        a.href = s.link; a.target = '_blank'; a.rel = 'noopener'; a.className = 'story-link'; a.textContent = 'Oop →';
+        linkTd.appendChild(a);
+      }
+      tr.appendChild(linkTd);
+      var actions = document.createElement('td');
+      actions.className = 'actions-cell';
+      if(isPending){
+        var ok = document.createElement('button');
+        ok.className = 'ok-btn'; ok.textContent = 'OK';
+        ok.onclick = function(){
+          fetch('/api/admin/stories/' + s.id + '/status', {
+            method:'POST', headers:{ 'Content-Type':'application/json', 'X-Admin-Key': KEY },
+            body: JSON.stringify({ status:'approved' })
+          }).then(function(){ s.status = 'approved'; render(); });
+        };
+        actions.appendChild(ok);
+      } else {
+        var undo = document.createElement('button');
+        undo.className = 'undo-btn'; undo.textContent = 'Herroep';
+        undo.onclick = function(){
+          fetch('/api/admin/stories/' + s.id + '/status', {
+            method:'POST', headers:{ 'Content-Type':'application/json', 'X-Admin-Key': KEY },
+            body: JSON.stringify({ status:'pending' })
+          }).then(function(){ s.status = 'pending'; render(); });
+        };
+        actions.appendChild(undo);
+      }
+      var del = document.createElement('button');
+      del.className = 'del'; del.textContent = 'Verwyder';
+      del.onclick = function(){
+        if(!confirm('Verwyder hierdie inskrywing permanent?')) return;
+        fetch('/api/admin/stories/' + s.id, { method:'DELETE', headers:{ 'X-Admin-Key': KEY } })
+          .then(function(){ ALL = ALL.filter(function(x){ return x.id !== s.id; }); render(); });
+      };
+      actions.appendChild(del);
+      tr.appendChild(actions);
+      rows.appendChild(tr);
+    });
+    var cats = Array.from(new Set(ALL.map(function(s){ return s.category; })));
+    var sel = document.getElementById('filter-cat');
+    var current = sel.value;
+    sel.innerHTML = '<option value="">Alle tipes</option>' + cats.map(function(c){ return '<option value="'+c.replace(/"/g,'&quot;')+'">'+c+'</option>'; }).join('');
+    sel.value = current;
+  }
+
+  function loadNotifySignups(){
+    fetch('/api/admin/notify-signups', { headers: { 'X-Admin-Key': KEY } })
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        document.getElementById('notify-card').style.display = 'block';
+        document.getElementById('notify-count').textContent = data.length + ' mense wil weet wanneer kaartjies beskikbaar is';
+      })
+      .catch(function(){ /* stories loaded fine even if this fails - not worth blocking on */ });
+  }
+
+  function login(){
+    KEY = document.getElementById('key').value.trim();
+    var status = document.getElementById('status');
+    status.textContent = 'Laai...';
+    fetch('/api/admin/stories', { headers: { 'X-Admin-Key': KEY } })
+      .then(function(r){ if(!r.ok) throw new Error('bad'); return r.json(); })
+      .then(function(data){
+        ALL = data;
+        status.textContent = '';
+        document.getElementById('data-card').style.display = 'block';
+        render();
+        loadNotifySignups();
+      })
+      .catch(function(){ status.textContent = 'Verkeerde sleutel, of die bediener is nie bereikbaar nie.'; status.style.color = '#e2632a'; });
+  }
+
+  document.getElementById('login-btn').addEventListener('click', login);
+  document.getElementById('key').addEventListener('keydown', function(e){ if(e.key==='Enter') login(); });
+  document.getElementById('filter-cat').addEventListener('change', render);
+  document.getElementById('filter-status').addEventListener('change', render);
+
+  document.getElementById('export-btn').addEventListener('click', function(){
+    fetch('/api/admin/export.csv', { headers: { 'X-Admin-Key': KEY } })
+      .then(function(r){ return r.blob(); })
+      .then(function(blob){
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url; a.download = 'klopjag-stories.csv';
+        document.body.appendChild(a); a.click(); a.remove();
+        URL.revokeObjectURL(url);
+      });
+  });
+
+  document.getElementById('notify-export-btn').addEventListener('click', function(){
+    fetch('/api/admin/notify-signups/export.csv', { headers: { 'X-Admin-Key': KEY } })
+      .then(function(r){ return r.blob(); })
+      .then(function(blob){
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url; a.download = 'klopjag-kaartjie-belangstelling.csv';
+        document.body.appendChild(a); a.click(); a.remove();
+        URL.revokeObjectURL(url);
+      });
+  });
+</script>
+</body>
+</html>
