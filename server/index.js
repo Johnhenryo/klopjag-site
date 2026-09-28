@@ -180,6 +180,12 @@ if (ALLOWED_ORIGINS.length) {
 
 app.use(express.static(PUBLIC_DIR));
 
+// Health check - also doubles as a "wake up" ping the site itself calls on page load,
+// since Render's free tier spins this server down after ~15 min of no traffic and the
+// next real request then has to wait ~30-50s for it to spin back up. Cheap on purpose:
+// no file reads, no auth, just confirms the process is alive (and awake).
+app.get('/api/health', (req, res) => res.json({ ok: true }));
+
 // Public: recent stories (for the archive preview on the site itself)
 // Only band-approved submissions show here — see the admin "OK" button.
 app.get('/api/stories', (req, res) => {
