@@ -457,6 +457,16 @@
   }
   updateCountdown();
 
+  // ---- "Stories gedeel" stat: real count of band-approved stories, from the API ----
+  var cdStoriesEl = document.getElementById('cd-stories');
+  if (cdStoriesEl) {
+    fetch(API_BASE + '/api/stories/count').then(function (r) { return r.json(); }).then(function (data) {
+      cdStoriesEl.textContent = data.count.toLocaleString();
+    }).catch(function () {
+      cdStoriesEl.closest('.cell').hidden = true;
+    });
+  }
+
   // ---- Hero: "amper" drops off the headline from 2 Feb 2027 ----
   function updateAmper(){
     var amperGoesAway = new Date('2027-02-02T00:00:00+02:00');

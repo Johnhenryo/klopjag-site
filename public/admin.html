@@ -72,16 +72,24 @@
   </div>
 
   <div class="card" id="notify-card" style="display:none;">
-    <div class="row" style="justify-content:space-between;">
+    <div class="row" style="justify-content:space-between; margin-bottom:14px;">
       <div>
         <strong>Kaartjie-belangstelling</strong>
         <div class="muted" id="notify-count">Laai...</div>
       </div>
       <button class="ghost" id="notify-export-btn">Laai CSV af</button>
     </div>
+    <table>
+      <thead><tr><th>Wanneer</th><th>Naam</th><th>E-pos</th><th></th></tr></thead>
+      <tbody id="notify-rows"></tbody>
+    </table>
   </div>
 
 <script>
+  // Same idea as public/app.js: when this page is opened from klopjag.co.za (static hosting,
+  // no backend of its own), relative /api/... calls have nowhere to go. Point them at the
+  // Render API explicitly so this page works from either klopjag.co.za or the Render URL.
+  var API_BASE = 'https://klopjag-site.onrender.com';
   var KEY = null;
   var ALL = [];
 
@@ -135,7 +143,7 @@
         var ok = document.createElement('button');
         ok.className = 'ok-btn'; ok.textContent = 'OK';
         ok.onclick = function(){
-          fetch('/api/admin/stories/' + s.id + '/status', {
+          fetch(API_BASE + '/api/admin/stories/' + s.id + '/status', {
             method:'POST', headers:{ 'Content-Type':'application/json', 'X-Admin-Key': KEY },
             body: JSON.stringify({ status:'approved' })
           }).then(function(){ s.status = 'approved'; render(); });
@@ -145,7 +153,7 @@
         var undo = document.createElement('button');
         undo.className = 'undo-btn'; undo.textContent = 'Herroep';
         undo.onclick = function(){
-          fetch('/api/admin/stories/' + s.id + '/status', {
+          fetch(API_BASE + '/api/admin/stories/' + s.id + '/status', {
             method:'POST', headers:{ 'Content-Type':'application/json', 'X-Admin-Key': KEY },
             body: JSON.stringify({ status:'pending' })
           }).then(function(){ s.status = 'pending'; render(); });
@@ -156,7 +164,7 @@
       del.className = 'del'; del.textContent = 'Verwyder';
       del.onclick = function(){
         if(!confirm('Verwyder hierdie inskrywing permanent?')) return;
-        fetch('/api/admin/stories/' + s.id, { method:'DELETE', headers:{ 'X-Admin-Key': KEY } })
+        fetch(API_BASE + '/api/admin/stories/' + s.id, { method:'DELETE', headers:{ 'X-Admin-Key': KEY } })
           .then(function(){ ALL = ALL.filter(function(x){ return x.id !== s.id; }); render(); });
       };
       actions.appendChild(del);
@@ -170,12 +178,39 @@
     sel.value = current;
   }
 
+  var ALL_NOTIFY = [];
+
+  function renderNotify(){
+    var tbody = document.getElementById('notify-rows');
+    tbody.innerHTML = '';
+    ALL_NOTIFY.forEach(function(n){
+      var tr = document.createElement('tr');
+      function td(txt){ var d = document.createElement('td'); d.textContent = txt; return d; }
+      tr.appendChild(td(fmtDate(n.createdAt)));
+      tr.appendChild(td(n.name));
+      tr.appendChild(td(n.email));
+      var actions = document.createElement('td');
+      var del = document.createElement('button');
+      del.className = 'del'; del.textContent = 'Verwyder';
+      del.onclick = function(){
+        if(!confirm('Verwyder hierdie inskrywing permanent?')) return;
+        fetch(API_BASE + '/api/admin/notify-signups/' + n.id, { method:'DELETE', headers:{ 'X-Admin-Key': KEY } })
+          .then(function(){ ALL_NOTIFY = ALL_NOTIFY.filter(function(x){ return x.id !== n.id; }); renderNotify(); });
+      };
+      actions.appendChild(del);
+      tr.appendChild(actions);
+      tbody.appendChild(tr);
+    });
+  }
+
   function loadNotifySignups(){
-    fetch('/api/admin/notify-signups', { headers: { 'X-Admin-Key': KEY } })
+    fetch(API_BASE + '/api/admin/notify-signups', { headers: { 'X-Admin-Key': KEY } })
       .then(function(r){ return r.json(); })
       .then(function(data){
+        ALL_NOTIFY = data;
         document.getElementById('notify-card').style.display = 'block';
         document.getElementById('notify-count').textContent = data.length + ' mense wil weet wanneer kaartjies beskikbaar is';
+        renderNotify();
       })
       .catch(function(){ /* stories loaded fine even if this fails - not worth blocking on */ });
   }
@@ -184,7 +219,7 @@
     KEY = document.getElementById('key').value.trim();
     var status = document.getElementById('status');
     status.textContent = 'Laai...';
-    fetch('/api/admin/stories', { headers: { 'X-Admin-Key': KEY } })
+    fetch(API_BASE + '/api/admin/stories', { headers: { 'X-Admin-Key': KEY } })
       .then(function(r){ if(!r.ok) throw new Error('bad'); return r.json(); })
       .then(function(data){
         ALL = data;
@@ -202,7 +237,7 @@
   document.getElementById('filter-status').addEventListener('change', render);
 
   document.getElementById('export-btn').addEventListener('click', function(){
-    fetch('/api/admin/export.csv', { headers: { 'X-Admin-Key': KEY } })
+    fetch(API_BASE + '/api/admin/export.csv', { headers: { 'X-Admin-Key': KEY } })
       .then(function(r){ return r.blob(); })
       .then(function(blob){
         var url = URL.createObjectURL(blob);
@@ -214,7 +249,7 @@
   });
 
   document.getElementById('notify-export-btn').addEventListener('click', function(){
-    fetch('/api/admin/notify-signups/export.csv', { headers: { 'X-Admin-Key': KEY } })
+    fetch(API_BASE + '/api/admin/notify-signups/export.csv', { headers: { 'X-Admin-Key': KEY } })
       .then(function(r){ return r.blob(); })
       .then(function(blob){
         var url = URL.createObjectURL(blob);
