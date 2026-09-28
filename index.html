@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K8FXF7ZEBN"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-K8FXF7ZEBN');
+</script>
+
+<title>Klopjag &mdash; 25 Jaar</title>
+<meta name="description" content="Klopjag se 25ste-herdenkingsite: liedjies, stories, die band, en 'n fan-storie-argief wat aftel na 13 Feb 2027.">
+<link rel="icon" href="images/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0b0a; --bg-raised:#161613; --bg-raised-2:#201f1b;
+    --ink:#f2efe8; --muted:#8c887e; --line:rgba(242,239,232,.16);
+    --ember:#b23a2f; --ember-strong:#d1453a; --ember-ink:#f5f1e9;
+    --gold:#8c887e; --moss:#b23a2f;
+    --shadow: 4px 4px 0 0 var(--ember);
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'IBM Plex Mono', ui-monospace, monospace;
+    font-size:16px; line-height:1.65; padding-inline:0;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.disp{ font-family:'Anton', 'Arial Narrow', sans-serif; font-weight:400; text-transform:uppercase; text-wrap:balance; letter-spacing:.005em; margin:0; }
+  .mono{ font-family:'IBM Plex Mono', ui-monospace, monospace; }
+  a{ color:inherit; }
+  img{ max-width:100%; display:block; }
+  .wrap{ max-width:1080px; margin-inline:auto; padding-inline:20px; }
+  section{ padding-block:74px; }
+  .eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--ember); font-weight:600; }
+  .lede{ color:var(--muted); font-size:1.02rem; max-width:56ch; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px; letter-spacing:.04em; text-transform:uppercase; font-weight:600;
+    padding:11px 18px; border-radius:2px; border:1.5px solid var(--ink); text-decoration:none;
+    background:transparent; color:var(--ink); cursor:pointer; transition:transform .15s ease, background .15s ease, color .15s ease;
+  }
+  .btn:hover{ background:var(--ink); color:var(--bg); }
+  .btn.primary{ background:var(--ember); border-color:var(--ember); color:var(--ember-ink); }
+  .btn.primary:hover{ background:var(--ember-strong); border-color:var(--ember-strong); transform:translateY(-1px); }
+  .btn:focus-visible, a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible{
+    outline:2.5px solid var(--ember); outline-offset:2px;
+  }
+  hr.rule{ border:none; border-top:1px solid var(--line); margin:0; }
+
+  /* ---------- Topbar ---------- */
+  .topbar{
+    position:sticky; top:env(safe-area-inset-top,0px); z-index:40;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 20px; background:color-mix(in srgb, var(--bg) 90%, transparent);
+    backdrop-filter:blur(10px); border-bottom:1px solid var(--line);
+  }
+  .topbar .brand{ display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .topbar .brand img{ height:26px; width:auto; }
+  .topbar nav{ display:flex; gap:22px; }
+  .topbar nav a{
+    text-decoration:none; font-family:'IBM Plex Mono',monospace; font-size:12px;
+    letter-spacing:.09em; text-transform:uppercase; color:var(--muted); font-weight:500;
+  }
+  .topbar nav a:hover{ color:var(--ember); }
+  @media (max-width:680px){ .topbar nav{ display:none; } }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative; padding-block:0; overflow:hidden; border-bottom:1px solid var(--line);
+  }
+  .hero-img{
+    position:relative; min-height:max(460px,61vw); background-color:#ffffff;
+    display:flex; align-items:flex-end;
+  }
+  .hero-graphic{
+    position:absolute; right:0; top:50%; transform:translateY(-50%);
+    width:50%; z-index:1; pointer-events:none; opacity:.75;
+  }
+  .hero-graphic img{ width:100%; height:auto; display:block; }
+  .tour-dot{
+    position:absolute; top:0; left:0; width:13px; height:13px; border-radius:50%;
+    background:#161613; box-shadow:0 0 0 3px rgba(255,255,255,.85), 0 1px 3px rgba(0,0,0,.35);
+    pointer-events:none; will-change:transform; opacity:0; transition:opacity .4s ease, box-shadow .3s ease;
+  }
+  .tour-dot.ready{ opacity:.92; }
+  .tour-dot.showing{ box-shadow:0 0 0 3px rgba(255,255,255,.85), 0 0 0 7px rgba(178,58,47,.3), 0 1px 3px rgba(0,0,0,.35); }
+  .hero-content{ position:relative; z-index:2; color:#161613; padding:40px 20px 44px; width:100%; max-width:640px; }
+  .hero-logo{ height:52px; width:auto; margin-bottom:22px; }
+  .hero h1{ font-size:clamp(2.2rem,6.4vw,3.8rem); color:#161613; line-height:1; }
+  .hero .dates{ margin-top:16px; font-family:'IBM Plex Mono',monospace; font-size:13.5px; letter-spacing:.08em; color:var(--ember-strong); font-variant-numeric:tabular-nums; text-transform:uppercase; }
+  .hero .sub{ margin-top:14px; max-width:52ch; color:#4a4640; font-size:1rem; }
+  .hero .cta-row{ margin-top:26px; display:flex; gap:12px; flex-wrap:wrap; }
+  .hero .btn{ border-color:#161613; color:#161613; }
+  .hero .btn:hover{ background:#161613; color:#fff; }
+  .hero .btn.primary{ background:var(--ember); border-color:var(--ember); color:var(--ember-ink); }
+
+  .countdown{ display:flex; gap:18px; margin-top:22px; flex-wrap:wrap; }
+  .countdown .cell{ text-align:left; }
+  .countdown .num{ font-family:'Anton',sans-serif; font-weight:400; font-size:1.8rem; color:#161613; font-variant-numeric:tabular-nums; }
+  .countdown .lab{ font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:.11em; color:#7a746a; }
+
+  /* ---------- generic section heading ---------- */
+  .sec-head{ display:flex; flex-direction:column; gap:10px; margin-bottom:34px; }
+  .sec-head h2{ font-size:clamp(1.7rem,3.8vw,2.4rem); }
+
+  /* ---------- Etymology aside ---------- */
+  .aside-card{
+    background:var(--bg-raised); border:1px solid var(--line); border-radius:2px;
+    padding:22px 24px; display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:start;
+    margin-block:30px;
+  }
+  .aside-card .word{ font-family:'Anton',sans-serif; font-weight:400; font-size:1.6rem; color:var(--ember); white-space:nowrap; text-transform:uppercase; }
+  .aside-card p{ margin:0; color:var(--muted); font-size:.94rem; }
+  .aside-card .src{ display:block; margin-top:8px; font-size:.76rem; color:var(--muted); opacity:.75; }
+  .aside-card.cta-card p{ color:var(--ink); }
+  .aside-card.cta-card .btn{ margin-top:14px; display:inline-block; }
+  .aside-card.cta-card .show-detail{ font-family:'IBM Plex Mono',monospace; font-size:.8rem; letter-spacing:.05em; text-transform:uppercase; color:var(--ember-strong); margin-top:12px; font-variant-numeric:tabular-nums; }
+  .aside-card.cta-card .cta-divider{ height:1px; background:var(--line); margin:18px 0; }
+  .aside-card.cta-card .notify-lede{ margin:0 0 10px; color:var(--ink); font-weight:600; font-size:.92rem; }
+  .notify-form{ display:flex; flex-wrap:wrap; gap:8px; }
+  .notify-form input{
+    flex:1 1 140px; min-width:0; font:inherit; font-size:.88rem; padding:9px 11px; border-radius:2px;
+    border:1.5px solid var(--line); background:var(--bg); color:var(--ink);
+  }
+  .notify-form input::placeholder{ color:var(--muted); }
+  .notify-form .btn{ flex:0 0 auto; margin-top:0; padding:9px 16px; font-size:.85rem; }
+  .notify-msg{ margin:10px 0 0; font-size:.85rem; }
+  .aside-card.cta-card .notify-msg.ok{ color:var(--ember); }
+  .aside-card.cta-card .notify-msg.err{ color:var(--ember-strong); }
+  .aside-card.cta-card .btn.whatsapp{
+    display:block; margin-top:0; background:#25D366; border-color:#25D366; color:#0b1a10; text-align:center; font-size:.85rem;
+  }
+  .aside-card.cta-card .btn.whatsapp:hover{ background:#1ebe5b; border-color:#1ebe5b; color:#0b1a10; }
+  @media (max-width:480px){
+    .notify-form{ flex-direction:column; }
+    .notify-form input{ flex:0 0 auto; width:100%; }
+    .notify-form .btn{ width:100%; }
+  }
+  @media (max-width:520px){ .aside-card{ grid-template-columns:1fr; } }
+
+  /* ---------- Setlist / track list, grouped by album ---------- */
+  .song-list{ display:flex; flex-direction:column; margin-top:8px; }
+  .album-group{ margin-bottom:44px; }
+  .album-group:last-child{ margin-bottom:0; }
+  .album-group-head{ display:flex; align-items:center; gap:14px; padding-bottom:14px; border-bottom:1px solid var(--line); margin-bottom:2px; }
+  .album-group-head img{ width:52px; height:52px; border-radius:2px; object-fit:cover; box-shadow:var(--shadow); flex-shrink:0; }
+  .album-group-head .agi{ flex:1; min-width:0; }
+  .album-group-head h3{ font-size:1.15rem; }
+  .album-group-head .agy{ font-family:'IBM Plex Mono',monospace; font-size:.74rem; color:var(--muted); margin-top:2px; }
+  .album-group-head .alink{ font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ember); text-decoration:none; white-space:nowrap; flex-shrink:0; border-bottom:1px solid var(--ember); padding-bottom:1px; }
+  .album-group-head .alink:hover{ color:var(--ember-strong); border-color:var(--ember-strong); }
+  .album-group.pending .album-group-head img{ opacity:.35; filter:grayscale(1); box-shadow:none; }
+  .album-pending-note{ font-size:.88rem; color:var(--muted); font-style:italic; padding:16px 4px; border-bottom:1px solid var(--line); }
+
+  .track{ border-bottom:1px solid var(--line); }
+  .track-row{ display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px; padding:11px 2px; }
+  .track-row .tn{ font-family:'IBM Plex Mono',monospace; color:var(--muted); font-size:.72rem; width:20px; text-align:right; flex-shrink:0; }
+  .track-row .tname{ flex:1 1 140px; min-width:140px; font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:.92rem; line-height:1.3; }
+  .track-row .tactions{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end; margin-left:auto; }
+  .splink{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.06em;
+    padding:5px 11px; border-radius:2px; text-decoration:none; font-weight:600; white-space:nowrap;
+    background:transparent; border:1.3px solid var(--moss); color:var(--moss);
+  }
+  .splink:hover{ background:var(--moss); color:var(--ember-ink); }
+  .splink.tbd{ background:transparent; border:1.3px dashed var(--muted); color:var(--muted); cursor:default; }
+  .splink.tbd:hover{ background:transparent; color:var(--muted); }
+  .icon-chip{
+    width:26px; height:26px; border-radius:2px; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:700; text-decoration:none; transition:transform .15s ease, background .15s ease;
+    border:none; background:none; padding:0; margin:0; -webkit-appearance:none; appearance:none; cursor:pointer;
+  }
+  .icon-chip.live{ background:transparent; border:1.3px solid var(--ember); color:var(--ember); }
+  .icon-chip.live:hover{ background:var(--ember); color:var(--ember-ink); }
+  .icon-chip.tbd{ background:transparent; border:1.3px dashed var(--muted); color:var(--muted); cursor:default; }
+  .track.chords-open .icon-chip.chords{ background:var(--ember); color:var(--ember-ink); }
+  .chords-panel{ max-height:0; overflow:hidden; transition:max-height .5s ease; }
+  .track.chords-open .chords-panel{ max-height:1400px; }
+  .chords-panel-inner{ padding:4px 4px 20px 34px; }
+  .chords-diagram-section{
+    background:#f4f1ea; border-radius:2px; padding:14px 16px 18px; margin:2px 0 16px;
+  }
+  .chords-diagram-section .cd-section-title{
+    font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:#161613; margin:0 0 10px;
+  }
+  .chord-diagrams-row{ display:flex; flex-wrap:wrap; gap:14px; }
+  .chord-diagram-card{ width:80px; flex-shrink:0; }
+  .chord-diagram-card svg{ width:100%; height:auto; display:block; }
+  .chords-panel-inner pre{
+    margin:0; font-family:'IBM Plex Mono',monospace; font-size:.8rem; line-height:1.6; color:var(--ink);
+    border-left:2px solid var(--ember); padding-left:14px; white-space:pre-wrap; word-break:break-word;
+    max-width:70ch; overflow-x:auto;
+  }
+  .chord-tag{
+    cursor:help; border-bottom:1.5px dotted var(--ember); padding-bottom:1px;
+  }
+  .chord-tag:hover, .chord-tag:focus{ color:var(--ember-strong); outline:none; }
+  .chord-pop{
+    display:none; position:fixed; z-index:80; width:96px; padding:8px;
+    background:#fffdf9; border:1px solid rgba(22,22,19,.15); border-radius:8px;
+    box-shadow:0 10px 28px rgba(0,0,0,.2); pointer-events:none;
+  }
+  .chord-pop svg{ width:100%; height:auto; display:block; }
+  .story-btn{
+    font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:.06em;
+    background:var(--ember); color:var(--ember-ink); padding:5px 11px; border-radius:2px; border:none;
+    cursor:pointer; white-space:nowrap; font-weight:700; transition:background .2s ease;
+  }
+  .story-btn:hover, .track.open .story-btn{ background:var(--ember-strong); }
+  .story-panel{ max-height:0; overflow:hidden; transition:max-height .4s ease; }
+  .story-panel-inner{ padding:2px 4px 18px 34px; }
+  .story-panel-inner p{
+    margin:0; font-size:.92rem; color:var(--ink); font-style:normal; border-left:2px solid var(--ember);
+    padding-left:14px; max-width:64ch; white-space:pre-line;
+  }
+  .story-byline{
+    margin:8px 0 0 14px; font-family:'IBM Plex Mono',monospace; font-size:.7rem;
+    text-transform:uppercase; letter-spacing:.06em;
+  }
+  .story-byline.band{ color:var(--ember); font-weight:700; }
+  .story-byline.fan{ color:var(--ink); opacity:.55; font-weight:700; }
+  @media (max-width:560px){
+    .album-group-head .agi h3{ font-size:1.02rem; }
+    .track-row .tname{ font-size:.86rem; }
+    .story-panel-inner{ padding-left:20px; }
+    .chords-panel-inner{ padding-left:20px; }
+    .chords-panel-inner pre{ font-size:.74rem; }
+  }
+
+  /* ---------- Discography ---------- */
+  .disco-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:24px; margin-top:8px; }
+  .disco-card{ text-decoration:none; color:var(--ink); }
+  .disco-cover{ position:relative; border-radius:2px; overflow:hidden; box-shadow:var(--shadow); aspect-ratio:1/1; }
+  .disco-cover img{ width:100%; height:100%; object-fit:cover; transition:transform .4s ease; }
+  .disco-card:hover .disco-cover img{ transform:scale(1.06); }
+  .disco-cover .ov{
+    position:absolute; inset:auto 0 0 0; padding:8px 10px; font-family:'IBM Plex Mono',monospace;
+    font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:#fff; background:linear-gradient(0deg,rgba(0,0,0,.75),transparent);
+    opacity:0; transition:opacity .25s ease;
+  }
+  .disco-card:hover .ov{ opacity:1; }
+  .disco-name{ margin-top:12px; font-family:'Anton',sans-serif; font-weight:400; font-size:1rem; text-transform:uppercase; }
+  .disco-year{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted); }
+
+  /* ---------- Gallery ---------- */
+  .gallery{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:34px; }
+  .gallery figure{ margin:0; border-radius:2px; overflow:hidden; box-shadow:var(--shadow); }
+  .gallery img{ width:100%; height:100%; object-fit:cover; aspect-ratio:4/5; }
+  .gallery figcaption{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--muted); padding-top:6px; text-transform:uppercase; letter-spacing:.05em; }
+  .gallery .wide{ grid-column:span 2; }
+  .gallery .wide img{ aspect-ratio:16/10; }
+  @media (max-width:720px){ .gallery{ grid-template-columns:repeat(2,1fr); } .gallery .wide{ grid-column:span 2; } }
+
+  /* ---------- Members ---------- */
+  .member-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:2px; background:var(--line); border:1px solid var(--line); border-radius:2px; overflow:hidden; margin-top:8px; }
+  @media (max-width:820px){ .member-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:480px){ .member-grid{ grid-template-columns:1fr; } }
+  .member{ background:var(--bg); padding:22px 20px; }
+  .member h3{ font-size:1.2rem; margin:0; }
+  .member .role{
+    margin-top:8px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase;
+    letter-spacing:.08em; color:var(--ember);
+  }
+  .member.has-photo{ cursor:pointer; }
+  .member.has-photo h3{ border-bottom:1.5px dotted var(--ember); display:inline-block; }
+  .member.has-photo:hover h3, .member.has-photo:focus h3{ color:var(--ember-strong); outline:none; }
+  .member-pop{
+    display:none; position:fixed; z-index:80; width:150px; padding:6px;
+    background:#fffdf9; border:1px solid rgba(22,22,19,.15); border-radius:8px;
+    box-shadow:0 10px 28px rgba(0,0,0,.2); pointer-events:none;
+  }
+  .member-pop img{ width:100%; height:184px; object-fit:cover; border-radius:4px; display:block; }
+
+  /* ---------- Timeline ---------- */
+  .timeline{ position:relative; margin-top:20px; padding-left:26px; border-left:2px solid var(--line); display:flex; flex-direction:column; gap:30px; }
+  .tl-item{ position:relative; }
+  .tl-item::before{
+    content:""; position:absolute; left:-33px; top:4px; width:11px; height:11px; border-radius:1px;
+    background:var(--ember); box-shadow:0 0 0 4px var(--bg), 0 0 0 5px var(--line);
+  }
+  .tl-item.tbd::before{ background:var(--bg); border:2px solid var(--muted); }
+  .tl-year{ font-family:'IBM Plex Mono',monospace; font-weight:700; color:var(--ember); letter-spacing:.03em; }
+  .tl-item.tbd .tl-year{ color:var(--muted); }
+  .tl-item h4{ font-family:'Anton',sans-serif; font-weight:400; font-size:1.1rem; margin:5px 0 5px; text-transform:uppercase; }
+  .tl-item p{ margin:0; color:var(--muted); font-size:.92rem; max-width:60ch; }
+  .tag-tbd{ display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:9.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); border:1px dashed var(--muted); border-radius:2px; padding:1px 6px; margin-left:8px; vertical-align:middle; }
+
+  /* ---------- Share your story ---------- */
+  .share-wrap{ display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; }
+  @media (max-width:820px){ .share-wrap{ grid-template-columns:1fr; } }
+  form.story-form{ display:flex; flex-direction:column; gap:14px; }
+  .field label{ display:block; font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:6px; }
+  .field input, .field select, .field textarea{
+    width:100%; font-family:'IBM Plex Mono',monospace; font-size:.94rem; padding:11px 13px; border-radius:2px;
+    border:1.5px solid var(--line); background:var(--bg-raised); color:var(--ink);
+  }
+  .field textarea{ resize:vertical; min-height:96px; }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:480px){ .row2{ grid-template-columns:1fr; } }
+  .archive-preview{ background:var(--bg-raised); border:1px solid var(--line); border-radius:2px; padding:20px; }
+  .archive-preview h4{ font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin:0 0 12px; }
+  .story-entry{ padding:12px 0; border-bottom:1px solid var(--line); }
+  .story-entry:last-child{ border-bottom:none; }
+  .story-entry .meta{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--ember); text-transform:uppercase; letter-spacing:.05em; }
+  .story-entry p{ margin:6px 0 0; font-size:.9rem; }
+  .note-box{ margin-top:14px; font-size:.8rem; color:var(--muted); border-left:2px dashed var(--muted); padding-left:10px; }
+  .form-status{ font-size:.86rem; font-family:'IBM Plex Mono',monospace; min-height:18px; }
+  .form-status.ok{ color:var(--ember); }
+
+  /* ---------- Footer ---------- */
+  footer{ border-top:1px solid var(--line); padding-block:40px 26px; }
+  .foot-row{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px; align-items:center; }
+  .foot-links{ display:flex; gap:16px; flex-wrap:wrap; }
+  .foot-links a{ text-decoration:none; font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted); }
+  .foot-links a:hover{ color:var(--ember); }
+  .fine{ margin-top:18px; font-size:.76rem; color:var(--muted); opacity:.8; }
+
+  /* ---------- Sticky player ---------- */
+  .player{
+    position:fixed; left:0; right:0; bottom:0; z-index:60;
+    background:var(--ink); color:var(--bg);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+    box-shadow:0 -8px 24px -10px rgba(0,0,0,.7);
+  }
+  .player-bar{ display:flex; align-items:center; gap:14px; padding:12px 18px; cursor:pointer; }
+  .player-bar .pmark{ width:34px; height:34px; border-radius:2px; background:var(--ember); flex-shrink:0; display:flex; align-items:center; justify-content:center; color:var(--ember-ink); font-family:'Anton',sans-serif; font-weight:400; font-size:15px; }
+  .player-bar .ptext{ flex:1; min-width:0; }
+  .player-bar .ptitle{ font-family:'Anton',sans-serif; font-weight:400; font-size:1rem; text-transform:uppercase; }
+  .player-bar .psub{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:color-mix(in srgb, var(--bg) 65%, transparent); text-transform:uppercase; letter-spacing:.06em; }
+  .player-bar .ptoggle{ font-family:'IBM Plex Mono',monospace; font-size:11px; border:1px solid color-mix(in srgb, var(--bg) 40%, transparent); border-radius:2px; padding:6px 12px; color:var(--bg); }
+  .player-panel{ max-height:0; overflow:hidden; transition:max-height .35s ease; border-top:1px solid rgba(255,255,255,.08); }
+  .player.open .player-panel{ max-height:340px; overflow-y:auto; }
+  .player-group-head{ font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:color-mix(in srgb, var(--bg) 55%, transparent); padding:12px 18px 4px; }
+  .player-song{ display:flex; align-items:center; gap:12px; padding:10px 18px; text-decoration:none; color:var(--bg); border-bottom:1px solid rgba(255,255,255,.06); }
+  .player-song .sw{ width:30px; height:30px; border-radius:2px; flex-shrink:0; background-size:cover; background-position:center; }
+  .player-song .nm{ flex:1; font-size:.86rem; font-family:'IBM Plex Mono',monospace; font-weight:600; }
+  .player-song .pl{ font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; color:color-mix(in srgb, var(--bg) 55%, transparent); }
+  .player-song:hover{ background:rgba(255,255,255,.05); }
+  body{ padding-bottom:76px; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition-duration:.001ms !important; animation-duration:.001ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="#top"><img src="images/logo.png" alt="Klopjag"></a>
+  <nav>
+    <a href="#songs">Liedjies</a>
+    <a href="#discography">Diskografie</a>
+    <a href="#band">Die Band</a>
+    <a href="#timeline">25 Jaar</a>
+    <a href="#share">Deel 'n Storie</a>
+  </nav>
+</header>
+
+<div id="top"></div>
+<section class="hero">
+  <div class="hero-img">
+    <div class="hero-graphic">
+      <img src="images/hero-tourmap.png" alt="">
+      <div class="tour-dot" id="tour-dot" aria-hidden="true"></div>
+    </div>
+    <div class="hero-content wrap">
+      <img class="hero-logo" src="images/logo.png" alt="Klopjag">
+      <h1>Klopjag = <span id="amper">amper </span>25 jaar van vriende in musiek</h1>
+      <div class="dates mono">13&nbsp;FEB&nbsp;2002 &mdash; 13&nbsp;FEB&nbsp;2027</div>
+      <p class="sub">'n Afrikaanse band van Pretoria wat nog nooit in een genre stil gesit het nie. Eers vriende, toe vriende in musiek, toe musikant-vriende, toe vriende met day-jobs, en nou vriende op 'n WhatsApp groep oral oor die Aarde. Nog steeds vriende. Bevoorreg dat musiek hulle sambreel, skild, vangnet en swaard kon wees. Hierdie site is waar die liedjies, die stories agter hulle, en 25 jaar se pad bymekaarkom &mdash; en waar jy jou eie hoofstuk kan byvoeg.</p>
+      <div class="countdown" id="countdown" aria-live="polite">
+        <div class="cell"><div class="num" id="cd-days">&nbsp;</div><div class="lab">Dae oor</div></div>
+        <div class="cell"><div class="num" id="cd-years">25</div><div class="lab">Jaar sterk</div></div>
+        <div class="cell"><div class="num">6</div><div class="lab">Albums</div></div>
+        <div class="cell"><div class="num">1000+</div><div class="lab">Shows gespeel</div></div>
+        <div class="cell"><div class="num">6</div><div class="lab">Bandlede</div></div>
+        <div class="cell"><div class="num">3</div><div class="lab">Lewendige opnames</div></div>
+        <div class="cell"><div class="num" id="cd-stories">&hellip;</div><div class="lab">Stories gedeel</div></div>
+      </div>
+      <div class="cta-row">
+        <a class="btn primary" href="#songs">Luister na die musiek</a>
+        <a class="btn" href="#share">Deel jou storie</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  // Small dot that travels the hero tour-graphic's route lines &mdash; Pretoria (the hub the
+  // artwork radiates from) out to tour stops across the country, one after another, symbolising
+  // the 1000+ shows Klopjag has played all over South Africa. Path was traced from the graphic's
+  // own white route lines (see the "hero-tourmap" art), so it follows the real drawing.
+  var dot = document.getElementById('tour-dot');
+  var graphic = document.querySelector('.hero-graphic');
+  if(!dot || !graphic) return;
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var VB_W = 1508, VB_H = 1813;
+  // Waypoints traced from the graphic's own route lines: hub (Pretoria) alternating with
+  // tour stops. Odd indices are "shows" (the dot lingers there); even indices are the hub,
+  // just passed through on the way to the next one.
+  var POINTS = [[967.0,982.0],[546.0,940.0],[967.0,982.0],[978.0,891.0],[967.0,982.0],[1348.0,604.0],[967.0,982.0],[1168.0,1460.0],[967.0,982.0],[735.0,1446.0],[967.0,982.0],[429.0,1656.0],[967.0,982.0],[192.0,1702.0],[967.0,982.0],[835.0,1050.0],[967.0,982.0],[478.0,1000.0],[967.0,982.0]];
+
+  var TRAVEL_SPEED = 480;   // viewBox units / second while moving between points
+  var SHOW_DWELL = 2400;    // ms lingered at a tour stop ("playing a show")
+  var HUB_DWELL = 350;      // ms passed through the hub
+  var HOVER_STOP_PX = 40;   // cursor within this many px of the dot: fully stops it
+  var HOVER_FAR_PX = 220;   // cursor beyond this many px: no effect at all
+
+  function dist(a,b){ return Math.hypot(a[0]-b[0], a[1]-b[1]); }
+  function isShowPoint(i){ return i % 2 === 1; }
+  function ease(t){ return t<0.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2; }
+
+  // Build a timeline of alternating travel/dwell segments across all waypoints, looping.
+  var segments = [];
+  for(var i=0;i<POINTS.length-1;i++){
+    var from = POINTS[i], to = POINTS[i+1];
+    var d = dist(from,to);
+    segments.push({ type:'travel', from:from, to:to, dur: Math.max(200, (d/TRAVEL_SPEED)*1000) });
+    segments.push({ type:'dwell', at:to, isShow: isShowPoint(i+1), dur: isShowPoint(i+1) ? SHOW_DWELL : HUB_DWELL });
+  }
+
+  var segIdx = 0, segElapsed = 0;
+  var mouseX = null, mouseY = null;
+  var lastTs = null;
+  var raf = null;
+
+  window.addEventListener('mousemove', function(e){ mouseX = e.clientX; mouseY = e.clientY; }, { passive:true });
+  document.addEventListener('mouseout', function(e){ if(!e.relatedTarget){ mouseX = null; mouseY = null; } });
+
+  function currentPos(){
+    var seg = segments[segIdx];
+    if(seg.type === 'dwell') return seg.at;
+    var t = Math.min(1, seg.dur ? segElapsed/seg.dur : 1);
+    var e = ease(t);
+    return [ seg.from[0] + (seg.to[0]-seg.from[0])*e, seg.from[1] + (seg.to[1]-seg.from[1])*e ];
+  }
+
+  function speedMultiplier(screenX, screenY){
+    if(mouseX === null) return 1;
+    var d = Math.hypot(mouseX-screenX, mouseY-screenY);
+    if(d >= HOVER_FAR_PX) return 1;
+    if(d <= HOVER_STOP_PX) return 0;
+    var t = (d - HOVER_STOP_PX) / (HOVER_FAR_PX - HOVER_STOP_PX);
+    return t*t*(3-2*t); // smoothstep
+  }
+
+  function frame(ts){
+    if(lastTs === null) lastTs = ts;
+    var dt = ts - lastTs;
+    lastTs = ts;
+
+    var rect = graphic.getBoundingClientRect();
+    var scaleX = rect.width / VB_W, scaleY = rect.height / VB_H;
+    var pos = currentPos();
+    var screenX = rect.left + pos[0]*scaleX, screenY = rect.top + pos[1]*scaleY;
+
+    var mult = speedMultiplier(screenX, screenY);
+
+    segElapsed += dt * mult;
+    var seg = segments[segIdx];
+    if(segElapsed >= seg.dur){
+      segElapsed -= seg.dur;
+      segIdx = (segIdx + 1) % segments.length;
+      pos = currentPos();
+      screenX = rect.left + pos[0]*scaleX; screenY = rect.top + pos[1]*scaleY;
+    }
+
+    dot.style.transform = 'translate(' + (pos[0]*scaleX) + 'px,' + (pos[1]*scaleY) + 'px) translate(-50%,-50%)';
+    if(!dot.classList.contains('ready')) dot.classList.add('ready');
+    var curSeg = segments[segIdx];
+    dot.classList.toggle('showing', curSeg.type === 'dwell' && !!curSeg.isShow);
+
+    raf = requestAnimationFrame(frame);
+  }
+  raf = requestAnimationFrame(frame);
+
+  document.addEventListener('visibilitychange', function(){
+    if(document.hidden){ if(raf) cancelAnimationFrame(raf); raf = null; lastTs = null; }
+    else if(!raf){ raf = requestAnimationFrame(frame); }
+  });
+})();
+</script>
+
+<section id="songs">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Die Speellys</div>
+      <h2>Al ons liedjies. Op Spotify &amp; Apple Music.</h2>
+      <p class="lede">Elke liedjie het lirieke en akkoorde, en 'n paar het stories by &mdash; tik op <span class="mono" style="font-size:.85em;">Storie</span> vir die agtergrond. Wil jy self 'n storie byvoeg? <a href="#share">Vul die vorm in</a> en laat ons hoor hoe hierdie liedjie deel was van jou en jou vriende se lewe.</p>
+    </div>
+    <div class="aside-card">
+      <div class="word">klop + jag</div>
+      <p>Die naam is 'n samesmelting van twee bande: John-Henry en Marie-Louise het musiek gemaak as <strong>Klopdisselboom</strong> (die "Klop"), en Sallas en Dawie as <strong>die Makoujagters</strong> (die "Jag"). Toe die twee groepe in 2002 saamgesmelt het, was die naam vanself daar.
+        <span class="src">Bron: bandgeskiedenis, Klopjag self</span>
+      </p>
+    </div>
+
+    <div class="aside-card cta-card">
+      <div class="word">25 Jaar Show</div>
+      <div>
+        <p>Vir ons 25 jaar-show wil ons van die liedjies saam met ander sing wat passievol is oor ons musiek. Stuur jou weergawe van jou gunsteling liedjie, en jy kan dalk die verhoog deel as ons 25 jaar se hoogtepunte deurdraf.</p>
+        <div class="show-detail mono">13 Februarie 2027 &middot; State Theatre, Pretoria &middot; 15:00</div>
+        <a class="btn primary" href="#share">Stuur jou weergawe &rarr;</a>
+
+        <div class="cta-divider"></div>
+
+        <p class="notify-lede">Laat weet my as die kaartjies beskikbaar is</p>
+        <form id="notify-form" class="notify-form" novalidate>
+          <input type="text" id="notify-name" name="name" placeholder="Naam" autocomplete="name" required>
+          <input type="email" id="notify-email" name="email" placeholder="jou@e-pos.co.za" autocomplete="email" required>
+          <button type="submit" class="btn">Laat weet my</button>
+        </form>
+        <p class="notify-msg" id="notify-msg" hidden></p>
+
+        <div class="cta-divider"></div>
+
+        <a class="btn whatsapp" id="wa-share-btn" href="#" target="_blank" rel="noopener">Maak 'n blokbespreking vol &mdash; deel die detail nou met jou vriende op WhatsApp</a>
+      </div>
+    </div>
+    <div class="song-list" id="song-list"></div>
+  </div>
+</section>
+
+<section id="discography" style="background:var(--bg-raised);">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Diskografie</div>
+      <h2>Die Albums</h2>
+      <p class="lede">Die grootste kompliment is om vandag te hoor dat hierdie musiek deel was van jou soundtrack &mdash; dankie.</p>
+    </div>
+    <div class="disco-grid" id="disco-grid"></div>
+  </div>
+</section>
+
+<section id="band" style="background:var(--bg-raised);">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Die Band</div>
+      <h2>Wie is hulle?</h2>
+      <p class="lede">Ses mense, vyf-en-twintig jaar, en nog steeds dieselfde nommers op die selfoon. Dis nie eintlik meer 'n band nie &mdash; dis 'n klomp vriende wat toevallig ook saam musiek maak.</p>
+    </div>
+    <div class="member-grid" id="member-grid"></div>
+  </div>
+</section>
+
+<section id="timeline">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">25 Jaar</div>
+      <h2>Die pad na 13.02.2027</h2>
+      <p class="lede">Van ons eerste show tot vandag toe &mdash; en nog 'n bietjie pad om te loop voor 13 Februarie 2027. Help ons gerus om die gapings te vul terwyl ons daarheen aftel.</p>
+    </div>
+    <div class="timeline" id="timeline-list"></div>
+  </div>
+</section>
+
+<section id="share" style="background:var(--bg-raised);">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Deel 'n Storie</div>
+      <h2>Vertel ons waar jy was &mdash; of sê hoekom jy moet saamsing by die 25 jaar-show</h2>
+      <p class="lede">'n Liedjie wat jou deurgehelp het, 'n show waaroor jy nog praat, 'n feit wat net jy sou weet, of 'n aansoek om die verhoog te deel by ons 25 jaar-show &mdash; voor die 25ste bou ons 'n argief hiervan vir die band om te lees en te gebruik.</p>
+    </div>
+    <div class="share-wrap">
+      <form class="story-form" id="story-form">
+        <div class="row2">
+          <div class="field">
+            <label for="f-name">Jou naam (opsioneel)</label>
+            <input id="f-name" name="name" type="text" placeholder="Anoniem is ook fine" autocomplete="name" maxlength="80">
+          </div>
+          <div class="field">
+            <label for="f-contact">Kontak (opsioneel)</label>
+            <input id="f-contact" name="contact" type="text" placeholder="E-pos of selfoonnommer, vir opvolg" autocomplete="email" maxlength="200">
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="f-song">Oor watter liedjie?</label>
+            <select id="f-song" name="song">
+              <option value="Algemeen / General">Algemeen / General</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-cat">Wat vir tipe bydrae is dit?</label>
+            <select id="f-cat" name="category">
+              <option>'n Herinnering</option>
+              <option>'n Fun fact</option>
+              <option>Wat dit vir my beteken</option>
+              <option>'n Boodskap aan die band</option>
+              <option>Ek wil saam sing by die 25 jaar show</option>
+            </select>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="f-venue">By watter show of plek was dit?</label>
+            <select id="f-venue" name="venue">
+              <option value="">Kies (indien jy weet)</option>
+              <option>Aardklop, Potchefstroom</option>
+              <option>Atterbury Teater, Pretoria</option>
+              <option>Bloemfontein</option>
+              <option>Blue Moon</option>
+              <option>Centurion Teater</option>
+              <option>Die Square</option>
+              <option>Dorpstraat Teater</option>
+              <option>Innibos</option>
+              <option>KKNK, Oudtshoorn</option>
+              <option>Maloneys</option>
+              <option>Nelspruit</option>
+              <option>State Theatre, Pretoria</option>
+              <option>Steak 'n Ale</option>
+              <option>Stellenbosch</option>
+              <option>Sun City</option>
+              <option>Tuks</option>
+              <option value="__other__">Ander plek (ek sal tik)</option>
+              <option value="__unsure__">Weet nie meer presies nie</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-when">Wanneer was dit? (opsioneel)</label>
+            <input id="f-when" name="when" type="text" placeholder="bv. 2006, of 'n aand in matriek" maxlength="120">
+          </div>
+        </div>
+        <div class="field" id="f-venue-other-wrap" hidden>
+          <label for="f-venue-other">Watter plek was dit?</label>
+          <input id="f-venue-other" name="venueOther" type="text" placeholder="Naam van die plek of dorp" maxlength="120">
+        </div>
+        <div class="field" id="f-link-wrap" hidden>
+          <label for="f-link">Skakel na jou opname (YouTube, Google Drive, WhatsApp, ens.)</label>
+          <input id="f-link" name="link" type="url" placeholder="https://..." maxlength="300">
+        </div>
+        <div class="field">
+          <label for="f-text" id="f-text-label">Jou storie</label>
+          <textarea id="f-text" name="text" placeholder="Vat jou tyd..." required maxlength="2000"></textarea>
+        </div>
+        <div>
+          <button class="btn primary" type="submit">Stuur dit in</button>
+          <div class="form-status" id="form-status"></div>
+        </div>
+      </form>
+
+      <div class="archive-preview">
+        <h4>Uit die argief</h4>
+        <div id="story-list">Laai onlangse stories&hellip;</div>
+        <p class="note-box">Elke storie wat hier gestuur word, stoor in die band se private argief &mdash; onlangse ene wys ook hier vir ander fans om te lees. Die band kan die volle argief deursoek, filter en uitvoer by <a href="admin.html">/admin.html</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-row">
+      <a class="brand" href="#top" style="text-decoration:none;"><img src="images/logo.png" alt="Klopjag" style="height:22px;"></a>
+      <div class="foot-links">
+        <a href="https://www.klopjag.co.za" target="_blank" rel="noopener">klopjag.co.za</a>
+        <a href="#songs">Liedjies</a>
+        <a href="#band">Band</a>
+        <a href="#share">Deel 'n storie</a>
+      </div>
+    </div>
+    <p class="fine">Klopjag &middot; Pretoria, Suid-Afrika &middot; on the road sedert 13 Februarie 2002.</p>
+  </div>
+</footer>
+
+<div class="player" id="player">
+  <div class="player-bar" id="player-toggle">
+    <div class="pmark">K</div>
+    <div class="ptext">
+      <div class="ptitle">Die Speellys</div>
+      <div class="psub" id="player-sub">Laai...</div>
+    </div>
+    <div class="ptoggle" id="player-toggle-label">Oop</div>
+  </div>
+  <div class="player-panel" id="player-panel"></div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
