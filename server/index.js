@@ -31,8 +31,13 @@ const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || '';
 // than one (e.g. the live domain plus a staging/preview URL). Leave unset and CORS is skipped
 // entirely - fine for the old all-in-one setup where this server also serves the site itself.
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || '').split(',').map((s) => s.trim()).filter(Boolean);
-const DATA_FILE = path.join(__dirname, 'data', 'stories.json');
-const NOTIFY_FILE = path.join(__dirname, 'data', 'ticket-notify.json');
+// Where the stories/signups JSON files live. On Render's free tier this is just a folder
+// inside the app itself, which gets wiped on every redeploy - fine for local dev, but NOT
+// fine for real data. On a paid Render instance with a persistent Disk attached, set DATA_DIR
+// to that disk's mount path (e.g. DATA_DIR=/var/data) so this survives redeploys and restarts.
+const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'data');
+const DATA_FILE = path.join(DATA_DIR, 'stories.json');
+const NOTIFY_FILE = path.join(DATA_DIR, 'ticket-notify.json');
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
 
 if (!ADMIN_KEY) {
@@ -184,7 +189,26 @@ app.use(express.static(PUBLIC_DIR));
 // since Render's free tier spins this server down after ~15 min of no traffic and the
 // next real request then has to wait ~30-50s for it to spin back up. Cheap on purpose:
 // no file reads, no auth, just confirms the process is alive (and awake).
-app.get('/api/health', (req, res) => res.json({ ok: true }));
+app.get('/api/health', (req, res) => {
+  // Extra fields here are a deliberate diagnostic for the persistent-disk setup: they let us
+  // check from outside whether DATA_DIR is actually set, what path it resolves to, and whether
+  // that path is genuinely writable - without needing Render dashboard/log access to find out.
+  let dataDirWritable = false;
+  try {
+    fs.accessSync(DATA_DIR, fs.constants.W_OK);
+    dataDirWritable = true;
+  } catch (e) {
+    dataDirWritable = false;
+  }
+  res.json({
+    ok: true,
+    usingCustomDataDir: !!process.env.DATA_DIR,
+    dataDir: DATA_DIR,
+    dataDirWritable: dataDirWritable,
+    storyCount: readAll().length,
+    notifyCount: readAllNotify().length,
+  });
+});
 
 // Public: total number of band-approved stories, for the "stories gedeel" stat on the
 // homepage. Just a count - no story content - so no admin key needed.
