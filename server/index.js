@@ -186,6 +186,13 @@ app.use(express.static(PUBLIC_DIR));
 // no file reads, no auth, just confirms the process is alive (and awake).
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 
+// Public: total number of band-approved stories, for the "stories gedeel" stat on the
+// homepage. Just a count - no story content - so no admin key needed.
+app.get('/api/stories/count', (req, res) => {
+  const count = readAll().filter((s) => s.status === 'approved').length;
+  res.json({ count });
+});
+
 // Public: recent stories (for the archive preview on the site itself)
 // Only band-approved submissions show here — see the admin "OK" button.
 app.get('/api/stories', (req, res) => {
